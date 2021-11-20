@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Socket.IO chat</title>
+    <style>   
+		body{
+	 margin: 0;
+	 padding: 0;
+	 font-family: sans-serif;
+	 background-color: black;
+	 background-image: url("shari.png");
+	 }
+	 .box{
+	 width: 300px;
+	 padding: 40px;
+	 position: absolute;
+	 top: 50%;
+	 left: 50%;
+	 transform: translate(-50%,-50%);
+	 background: black;
+	 text-align: center;
+	 }
+	 .box h1{
+	 color: white;
+	 text-transform: uppercase;
+	 font-weight: 500;
+	 }
+	 .box input[type = "text"],.box input[type = "password"]{
+	 border:0;
+	 background: none;
+	 display: block;
+	 margin: 20px auto;
+	 text-align: center;
+	 border: 2px solid red;
+	 padding: 14px 10px;
+	 width: 200px;
+	 outline: none;
+	 color: white;
+	 border-radius: 24px;
+	 transition: 0.25s;
+	 }
+	 .box input[type = "text"]:focus,.box input[type = "password"]:focus{
+	 width: 280px;
+	 border-color: white;
+	 }
+	 .box input[type = "submit"]{
+	 border:0;
+	 background: none;
+	 display: block;
+	 margin: 20px auto;
+	 text-align: center;
+	 border: 2px solid white;
+	 padding: 14px 40px;
+	 outline: none;
+	 color: white;
+	 border-radius: 24px;
+	 transition: 0.25s;
+	 cursor: pointer;
+	 }
+	 .box input[type = "submit"]:hover{
+	 background: red;
+	 }
+	</style>   
+  </head>
+  <body>
+    <script src="/socket.io/socket.io.js"></script>
+   
+    <script>
+      
+        var socket = io();
+      socket.emit('chat login');
+      
+    </script>
+
+    <button name="button" onclick="  window.location.href='about.html'" type="button" 
+    style="margin: 16px; padding: 16px; background-color: red; color: aliceblue; border: none;border-radius: 4px;font-size: 12px">About</button>
+	<button name="button" onclick="  window.location.href='register.html'" type="button" 
+    style="margin: 16px; padding: 16px; background-color: red; color: aliceblue; border: none;border-radius: 4px;font-size: 12px">Register</button>
+    <form class="box" id="login">
+
+      <h1>Login</h1>
+
+      
+    
+      <input type="text" name="" id="username" placeholder="Username">
+    
+      <input type="password" name="" id="password" placeholder="Password">
+    
+      <input type="submit"  name="" value="Login">
+    
+    </form>
+	
+    <script>
+		var booll=false
+		const form = document.getElementById('login')
+		form.addEventListener('submit', login)
+
+		async function login(event) {
+			event.preventDefault()
+			const username = document.getElementById('username').value
+			const password = document.getElementById('password').value
+			
+			const result = await fetch('/api/login', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({
+					username,
+					password
+				})
+			}).then((res) => res.json())
+
+			if (result.status === 'ok') {
+				// everythign went fine
+				
+				 
+				console.log('Got the token: ', result.data);
+				localStorage.setItem('token', result.data);
+				window.location.href='profiles.html'
+
+			} else {
+				
+				alert(result.error)
+			}
+			
+			 
+		}
+		
+	</script>
+  </body>
+</html>

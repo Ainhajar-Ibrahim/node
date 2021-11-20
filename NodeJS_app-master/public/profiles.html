@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Profile</title>
+	</head>
+    
+	<body>
+        <style>
+body {
+  font-family: Arial, Helvetica, sans-serif;
+  margin: 0;
+  background-image: url("shari.png");
+}
+
+html {
+  box-sizing: border-box;
+}
+
+*, *:before, *:after {
+  box-sizing: inherit;
+}
+
+.column {
+  float: left;
+  width: 33.3%;
+  margin-bottom: 16px;
+  padding: 0 8px;
+}
+
+.card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  margin: 8px;
+}
+
+.about-section {
+  padding: 50px;
+  text-align: center;;
+  color: white;
+}
+.header{
+  color: white;
+}
+
+</style>
+		<!-- Here a loader is created which 
+             loads till response comes -->
+            <h1 class="header" >Your profile</h1>
+            <button name="button"  onclick=" dellete() " type="button" 
+                  style="margin: 16px; padding: 16px; background-color: red; color: aliceblue; border: none;border-radius: 4px;font-size: 12px">Disconnect</button>
+            <!-- table for showing data -->
+            <div class="about-section">
+                <button name="button" onclick="window.location.href='index.html'" type="button" 
+                  style="margin: 16px; padding: 16px; background-color: red; color: aliceblue; border: none;border-radius: 4px;font-size: 12px">Home</button>
+                  <button name="button" onclick="window.location.href='change-password.html'" type="button" 
+                  style="margin: 16px; padding: 16px; background-color: red; color: aliceblue; border: none;border-radius: 4px;font-size: 12px">Change Password</button>
+                  
+                <h1 id='name' ></h1>
+                <p id='email' ></p>
+                <p id='phone'></p>
+              </div>
+		<script>
+      function dellete(){
+                
+                localStorage.setItem('token', "a");
+                window.location.href='index.html'
+                
+            }
+        async function find() {			
+				const result = await fetch('/api/profile', {
+					method: 'GET',
+					headers: {
+                        'token': localStorage.getItem('token'),
+						'Content-Type': 'application/json'
+					},
+					
+					
+				
+				}).then((res) => res.json())
+            console.log(result.username)
+                
+               
+                document.getElementById("name").innerHTML = await result.username;
+                document.getElementById("email").innerHTML = result.email;
+                document.getElementById("phone").innerHTML = result.phone;
+                
+            }
+            find()
+            
+    
+
+		</script>
+        <script src="/socket.io/socket.io.js"></script>
+   
+        <script>
+          
+            var socket = io();
+          socket.emit('chat profiles');
+          
+        </script>
+	</body>
+</html>:
