@@ -88,10 +88,10 @@ app.get('/api/profile', async (req, res) => {
 		const name1 = user.username
 		const user1 = await User.findOne( {username:name1  }).lean()
 		res.json({ username: user1.username, email: user1.email, phone: user1.phone })
-		
+		console.log(user1.username)
 	} catch (error) {
 		console.log(error)
-		res.json({ status: 'error', error: ';))' })
+		res.json({ status: 'error', error: 'no account found' })
 	}
 })
 
